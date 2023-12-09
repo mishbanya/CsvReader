@@ -1,22 +1,11 @@
-import com.opencsv.exceptions.CsvValidationException;
-
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class Main {
+    public static void main(String[] args) throws FileNotFoundException {
+        MyReader myReader = new MyReader();
+        List<Person> people = myReader.readData("foreign_names.csv");
 
-    public static void main(String[] args) {
-        CsvReader csvReader = new CsvReader();
-
-        try {
-            List<Person> peopleList = csvReader.readCsv("foreign_names.csv", ';');
-
-            // Выводим информацию о людях в списке
-            for (Person person : peopleList) {
-                System.out.println(person);
-            }
-        } catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
-        }
+        // Дополнительные действия с полученными данными, если необходимо
     }
 }
