@@ -8,7 +8,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class MyReader
+ * Reads data from a CSV file
+ */
 public class MyReader {
+
+    /*
+     * Reads data from a CSV file
+     * @param filePath - path to the CSV file
+     * @return List of Person objects
+     */
     public List<Person> readData(String filePath) {
         List<Person> people = new ArrayList<>();
 

@@ -1,0 +1,154 @@
+//Author: Degtyarev Mikhail
+//date: 9.12.2023
+//github: https://github.com/mishbanya/CsvReader.git
+
+
+//Main.java
+
+/**
+ * Class Main
+ * Entry point of the program
+ */
+public class Main {
+
+    /*
+     * Entry point of the program
+     * @param args - command line arguments
+     * @throws FileNotFoundException - if file is not found
+     */
+    public static void main(String[] args) throws FileNotFoundException {
+        MyReader myReader = new MyReader();
+        List<Person> people = myReader.readData("foreign_names.csv");
+        for (Person person : people){
+            System.out.println(person.toString());
+        }
+    }
+}
+
+//MyReader.java
+
+/**
+ * Class MyReader
+ * Reads data from a CSV file
+ */
+public class MyReader {
+
+    /*
+     * Reads data from a CSV file
+     * @param filePath - path to the CSV file
+     * @return List of Person objects
+     */
+    public List<Person> readData(String filePath) {
+        List<Person> people = new ArrayList<>();
+
+        try (CSVReader csvReader = new CSVReaderBuilder(new FileReader(filePath))
+                .withCSVParser(new CSVParserBuilder().withSeparator(';').build())
+                .build()) {
+            String[] nextRecord;
+            csvReader.readNext(); // Пропускаем заголовок
+
+            while ((nextRecord = csvReader.readNext()) != null) {
+                Person person = new Person(
+                        Integer.parseInt(nextRecord[0]),
+                        nextRecord[1],
+                        nextRecord[2],
+                        nextRecord[3],
+                        nextRecord[4],
+                        Integer.parseInt(nextRecord[5])
+                );
+                people.add(person);
+            }
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+        }
+
+        return people;
+    }
+}
+
+//Person.java
+
+/**
+ * Class Person
+ * Represents a person
+ */
+public class Person {
+    private int id;
+    private String name;
+    private String gender;
+    private String birthDate;
+    private Division division;
+    private int salary;
+
+    /*
+     * Constructor for the Person class
+     * @param id - identifier
+     * @param name - name
+     * @param gender - gender
+     * @param birthDate - date of birth
+     * @param division - name of division
+     * @param salary - salary
+     */
+    public Person(int id, String name, String gender, String birthDate, String division, int salary) {
+        Random rand = new Random();
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.division.setName(division);
+        this.division.setId(rand.nextInt(1000));
+        this.salary = salary;
+    }
+
+    /*
+     * String representation of the Person class
+     * @return String representation of the Person class
+     */
+    @Override
+    public String toString() {
+        return this.id +": name: '" + this.name + "', gender: '" + this.gender + "', division: '" + this.division.toString() + "'";
+    }
+}
+
+//Division.java
+
+/**
+ * Division class
+ * This class is used to represent a division
+ * It has a name and an identifier
+ * It has a constructor and setters
+ * It has a toString method
+ */
+public class Division {
+    private String name;
+    private int id;
+
+    /*
+     * Constructor for the Division class
+     * @param name - name
+     * @param id - identifier
+     */
+    public Division(String name, int id) {
+        this.id = id;
+        this.name = name;
+    }
+    /*
+     * Setter for the name field
+     * @param name - name
+     */
+    public void setName(String name) { this.name = name; }
+    /*
+     * Setter for the id field
+     * @param id - identifier
+     */
+    public void setId(int id) { this.id = id; }
+
+    /*
+     * String representation of the Division class
+     * @return String representation of the Division class
+     */
+    @Override
+    public String toString() {
+        return this.id + ": " + this.name;
+    }
+}
