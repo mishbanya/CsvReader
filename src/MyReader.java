@@ -1,15 +1,20 @@
-
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 
-import java.io.*;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MyReader {
-    public List<Person> readData(String filePath) throws FileNotFoundException {
+    public List<Person> readData(String filePath) {
         List<Person> people = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader(filePath), ';')) {
+
+        try (CSVReader csvReader = new CSVReaderBuilder(new FileReader(filePath))
+                .withCSVParser(new CSVParserBuilder().withSeparator(';').build())
+                .build()) {
             String[] nextRecord;
             csvReader.readNext(); // Пропускаем заголовок
 
